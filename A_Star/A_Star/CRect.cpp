@@ -102,7 +102,7 @@ int CRect::SetParent(CRect* _p)
 	return 0;
 }
 
-int CRect::TesetRender(HDC _hdc)
+int CRect::TestRender(HDC _hdc)
 {
 	RECT rt{ m_iPivot_x - (int)(m_iWidth * 0.5) ,m_iPivot_y - (int)(m_iHeight * 0.5) ,m_iPivot_x + (int)(m_iWidth * 0.5) , m_iPivot_y + (int)(m_iHeight * 0.5) };
 	HBRUSH brush;

@@ -1,8 +1,1 @@
-﻿  CMap.cpp
-C:\Users\Admin\source\repos\A_Star\A_Star\CMap.cpp(19,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\A_Star\A_Star\CMap.cpp(28,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\A_Star\A_Star\CMap.cpp(64,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\A_Star\A_Star\CMap.cpp(153,9): warning C4101: 'y': unreferenced local variable
-C:\Users\Admin\source\repos\A_Star\A_Star\CMap.cpp(153,6): warning C4101: 'x': unreferenced local variable
-C:\Users\Admin\source\repos\A_Star\A_Star\CMap.cpp(149): warning C4717: 'CMap::DFS': recursive on all control paths, function will cause runtime stack overflow
-C:\Users\Admin\source\repos\A_Star\A_Star\CMap.cpp(149): error C4716: 'CMap::DFS': must return a value
+﻿  A_Star.vcxproj -> D:\UNITY\JK_MU\A_Star\A_Star\Debug\A_Star.exe

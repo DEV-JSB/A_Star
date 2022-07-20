@@ -18,7 +18,7 @@ private:
 	int NodeConnect();
 	CRect* FindInRect(TYPE _type, const int _x, const int _y);
 	CRect* FindInRect(const int _x, const int _y);
-	CRect* DFS(CRect* _p, int _index);
+	CRect* DFS(std::vector<CRect*> _lstRect);
 private:
 	CMap();
 	~CMap();

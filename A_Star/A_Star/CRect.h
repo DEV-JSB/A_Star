@@ -16,8 +16,8 @@ public:
 	int				SetParent(CRect* _p);
 
 	// MustDeleteFunction
-	int				TesetRender(HDC _hdc);
-
+	int				TestRender(HDC _hdc);
+	std::vector<CRect*> GetNeighborVector() { return m_vecNeighbor; }
 
 public:
 

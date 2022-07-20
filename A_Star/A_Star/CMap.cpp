@@ -75,32 +75,38 @@ int CMap::NodeConnect()
 		{
 			tmp->SetParent(m_vecRect[i]);
 			m_vecRect[i]->SetNeighbor(tmp);
-		}		tmp = FindInRect(m_vecRect[i]->GetX(), m_vecRect[i]->GetY() - 1);
+		}		
+		tmp = FindInRect(m_vecRect[i]->GetX(), m_vecRect[i]->GetY() - 1);
 		if (nullptr != tmp && tmp != m_pStartRect)
 		{
 			tmp->SetParent(m_vecRect[i]);
 			m_vecRect[i]->SetNeighbor(tmp);
-		}		tmp = FindInRect(m_vecRect[i]->GetX(), m_vecRect[i]->GetY() + 1);
+		}		
+		tmp = FindInRect(m_vecRect[i]->GetX(), m_vecRect[i]->GetY() + 1);
 		if (nullptr != tmp && tmp != m_pStartRect)
 		{
 			tmp->SetParent(m_vecRect[i]);
 			m_vecRect[i]->SetNeighbor(tmp);
-		}		tmp = FindInRect(m_vecRect[i]->GetX() - 1, m_vecRect[i]->GetY() - 1);
+		}		
+		tmp = FindInRect(m_vecRect[i]->GetX() - 1, m_vecRect[i]->GetY() - 1);
 		if (nullptr != tmp && tmp != m_pStartRect)
 		{
 			tmp->SetParent(m_vecRect[i]);
 			m_vecRect[i]->SetNeighbor(tmp);
-		}		tmp = FindInRect(m_vecRect[i]->GetX() - 1, m_vecRect[i]->GetY() + 1);
+		}		
+		tmp = FindInRect(m_vecRect[i]->GetX() - 1, m_vecRect[i]->GetY() + 1);
 		if (nullptr != tmp && tmp != m_pStartRect)
 		{
 			tmp->SetParent(m_vecRect[i]);
 			m_vecRect[i]->SetNeighbor(tmp);
-		}		tmp = FindInRect(m_vecRect[i]->GetX() + 1, m_vecRect[i]->GetY() + 1);
+		}		
+		tmp = FindInRect(m_vecRect[i]->GetX() + 1, m_vecRect[i]->GetY() + 1);
 		if (nullptr != tmp && tmp != m_pStartRect)
 		{
 			tmp->SetParent(m_vecRect[i]);
 			m_vecRect[i]->SetNeighbor(tmp);
-		}		tmp = FindInRect(m_vecRect[i]->GetX() + 1, m_vecRect[i]->GetY() - 1);
+		}		
+		tmp = FindInRect(m_vecRect[i]->GetX() + 1, m_vecRect[i]->GetY() - 1);
 		if (nullptr != tmp && tmp != m_pStartRect)
 		{
 			tmp->SetParent(m_vecRect[i]);
@@ -132,20 +138,32 @@ int CMap::FuncSetG(CRect* _pt)
 }
 
 
-CRect* CMap::DFS(CRect* _p,int _index)
+CRect* CMap::DFS(std::vector<CRect*> _lstRect)
 {
-	// 탈출 조건식을 잘 못 두었다
-
-	if (_p->IsNeighLstEnd(_index))
-		return _p;
-	if (!_p->IsScaned())
+	// DFS 내부에 FOR문을 도는 것 일까?
+	for (int i = 0; i < _lstRect.size(); ++i)
 	{
-		printf("x : %d , y : %d 스캔중 \n", _p->GetX(), _p->GetY());
-		Sleep(300);
-		//FuncSetG(_p);
+		// 일단 찾았다!!
+		if (_lstRect[i] == m_pEndRect)
+			return nullptr;
+		if (!_lstRect[i]->IsScaned())
+		{
+			printf("x : %d , y : %d 스캔중 \n", _lstRect[i]->GetX(), _lstRect[i]->GetY());
+			_lstRect[i]->SetScanState(true);
+			_lstRect[i]->TestRender(GetDC(m_hWnd));
+			Sleep(300);
+			//FuncSetG(_p);
+		}
+		DFS((_lstRect[0]->GetNeighborVector()));
+		DFS((_lstRect[1]->GetNeighborVector()));
+		DFS((_lstRect[2]->GetNeighborVector()));
+		DFS((_lstRect[3]->GetNeighborVector()));
+		DFS((_lstRect[4]->GetNeighborVector()));
+		DFS((_lstRect[5]->GetNeighborVector()));
+		DFS((_lstRect[6]->GetNeighborVector()));
+		DFS((_lstRect[7]->GetNeighborVector()));
+
 	}
-	_p->TesetRender(GetDC(m_hWnd));
-	DFS(_p->GetNeighbor(_index + 1), _index + 1);
 }
 
 int CMap::Update()
@@ -153,7 +171,7 @@ int CMap::Update()
 	int x, y;
 	if (nullptr != m_pEndRect && nullptr != m_pStartRect)
 	{
-		DFS(m_pStartRect->GetNeighbor(0), 0);
+		DFS(m_pStartRect->GetNeighborVector());
 	}
 	return 0;
 }

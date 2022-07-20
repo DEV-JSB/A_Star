@@ -1,0 +1,27 @@
+﻿  A_Star.cpp
+  CMap.cpp
+C:\Users\Admin\source\repos\A_Star\A_Star\CMap.cpp(19,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\A_Star\A_Star\CMap.cpp(28,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\A_Star\A_Star\CMap.cpp(64,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\A_Star\A_Star\CMap.cpp(119,9): warning C4101: 'y': unreferenced local variable
+C:\Users\Admin\source\repos\A_Star\A_Star\CMap.cpp(119,6): warning C4101: 'x': unreferenced local variable
+C:\Users\Admin\source\repos\A_Star\A_Star\CMap.cpp(115): warning C4715: 'CMap::DFS': not all control paths return a value
+  CRect.cpp
+C:\Users\Admin\source\repos\A_Star\A_Star\CRect.cpp(47,118): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\A_Star\A_Star\CRect.cpp(47,89): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\A_Star\A_Star\CRect.cpp(47,59): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\A_Star\A_Star\CRect.cpp(47,30): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\A_Star\A_Star\CRect.cpp(54,118): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\A_Star\A_Star\CRect.cpp(54,89): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\A_Star\A_Star\CRect.cpp(54,59): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\A_Star\A_Star\CRect.cpp(54,30): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\A_Star\A_Star\CRect.cpp(61,118): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\A_Star\A_Star\CRect.cpp(61,89): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\A_Star\A_Star\CRect.cpp(61,59): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\A_Star\A_Star\CRect.cpp(61,30): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\A_Star\A_Star\CRect.cpp(68,118): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\A_Star\A_Star\CRect.cpp(68,89): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\A_Star\A_Star\CRect.cpp(68,59): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\A_Star\A_Star\CRect.cpp(68,30): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\A_Star\A_Star\CRect.cpp(40,8): warning C4101: 'buffer': unreferenced local variable
+  A_Star.vcxproj -> C:\Users\Admin\source\repos\A_Star\Debug\A_Star.exe

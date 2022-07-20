@@ -18,8 +18,7 @@ private:
 	int NodeConnect();
 	CRect* FindInRect(TYPE _type, const int _x, const int _y);
 	CRect* FindInRect(const int _x, const int _y);
-	CRect* DFS(CRect* _p);
-
+	CRect* DFS(CRect* _p, int _index);
 private:
 	CMap();
 	~CMap();
@@ -36,9 +35,8 @@ public:
 	int Update();
 	int SetStartRect(const int _x,const int _y);
 	int Render(HDC _hdc);
-	int Init(const int _row, const int _col, const int _rect_width = RECT_WIDTH, const int _rect_height = RECT_HEIHGT);
+	int Init(HWND _hwnd,const int _row, const int _col, const int _rect_width = RECT_WIDTH, const int _rect_height = RECT_HEIHGT);
 private:
-	
 	HWND m_hWnd;
 	
 	Pos m_stStartPos;

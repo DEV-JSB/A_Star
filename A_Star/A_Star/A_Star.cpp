@@ -154,7 +154,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         ((MINMAXINFO*)lParam)->ptMinTrackSize.y = 1100;
     case WM_CREATE:
     {
-        CMap::GetInstance()->Init(20, 20);
+        CMap::GetInstance()->Init(ghWnd,20, 20);
         SetTimer(ghWnd, 0, 1000, NULL);
         InvalidateRect(hWnd, NULL, true);
     }

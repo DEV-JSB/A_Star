@@ -15,7 +15,6 @@ CRect::CRect(const int _coordi_x,const int _coordi_y,const int _x, const int _y,
 	, m_eType(TYPE::TYPE_NORMAL)
 	,m_iX(_coordi_x)
 	,m_iY(_coordi_y)
-	,m_pBottom(nullptr),m_pTop(nullptr),m_pLeft(nullptr),m_pRight(nullptr),m_pLB(nullptr),m_pLT(nullptr),m_pRT(nullptr),m_pRB(nullptr)
 {
 }
 
@@ -92,6 +91,43 @@ bool CRect::IsInRect(const TYPE _type, const int _x, const int _y)
 bool CRect::FindPivotRect(const int _x, const int _y)
 {
 	if (_x == m_iX && _y == m_iY)
+		return true;
+	else
+		return false;
+}
+
+int CRect::SetParent(CRect* _p)
+{
+	m_pParent = _p;
+	return 0;
+}
+
+int CRect::TesetRender(HDC _hdc)
+{
+	RECT rt{ m_iPivot_x - (int)(m_iWidth * 0.5) ,m_iPivot_y - (int)(m_iHeight * 0.5) ,m_iPivot_x + (int)(m_iWidth * 0.5) , m_iPivot_y + (int)(m_iHeight * 0.5) };
+	HBRUSH brush;
+	HBRUSH oldbrush;
+	char* buffer;
+	brush = CreateSolidBrush(RGB(0, 255, 0));
+	oldbrush = (HBRUSH)SelectObject(_hdc, brush);
+	Rectangle(_hdc, m_iPivot_x - m_iWidth * 0.5, m_iPivot_y - m_iHeight * 0.5, m_iPivot_x + m_iWidth * 0.5, m_iPivot_y + m_iHeight * 0.5);
+	SelectObject(_hdc, oldbrush);
+	DeleteObject(brush);
+
+	return 0;
+}
+
+CRect* CRect::GetNeighbor(const int _index)
+{
+	if (m_vecNeighbor.size() <= _index)
+		return nullptr;
+	else
+		return m_vecNeighbor[_index];
+}
+
+bool CRect::IsNeighLstEnd(const int _index)
+{
+	if (m_vecNeighbor.size() == _index)
 		return true;
 	else
 		return false;

@@ -63,14 +63,49 @@ int CMap::NodeConnect()
 {
 	for (int i = 0; i < m_vecRect.size(); ++i)
 	{
-		m_vecRect[i]->SetRight(FindInRect(m_vecRect[i]->GetX() + 1, m_vecRect[i]->GetY()));
-		m_vecRect[i]->SetLeft(FindInRect(m_vecRect[i]->GetX() - 1, m_vecRect[i]->GetY()));
-		m_vecRect[i]->SetTop(FindInRect(m_vecRect[i]->GetX(), m_vecRect[i]->GetY() + 1));
-		m_vecRect[i]->SetBottom(FindInRect(m_vecRect[i]->GetX(), m_vecRect[i]->GetY() - 1));
-		m_vecRect[i]->SetLT(FindInRect(m_vecRect[i]->GetX() - 1, m_vecRect[i]->GetY() + 1));
-		m_vecRect[i]->SetLB(FindInRect(m_vecRect[i]->GetX() - 1, m_vecRect[i]->GetY() - 1));
-		m_vecRect[i]->SetRT(FindInRect(m_vecRect[i]->GetX() + 1, m_vecRect[i]->GetY() + 1));
-		m_vecRect[i]->SetRB(FindInRect(m_vecRect[i]->GetX() + 1, m_vecRect[i]->GetY() - 1));
+		CRect* tmp;
+		tmp = FindInRect(m_vecRect[i]->GetX() - 1, m_vecRect[i]->GetY());
+		if (nullptr != tmp && tmp != m_pStartRect)
+		{
+			tmp->SetParent(m_vecRect[i]);
+			m_vecRect[i]->SetNeighbor(tmp);
+		}
+		tmp = FindInRect(m_vecRect[i]->GetX() + 1, m_vecRect[i]->GetY());
+		if (nullptr != tmp && tmp != m_pStartRect)
+		{
+			tmp->SetParent(m_vecRect[i]);
+			m_vecRect[i]->SetNeighbor(tmp);
+		}		tmp = FindInRect(m_vecRect[i]->GetX(), m_vecRect[i]->GetY() - 1);
+		if (nullptr != tmp && tmp != m_pStartRect)
+		{
+			tmp->SetParent(m_vecRect[i]);
+			m_vecRect[i]->SetNeighbor(tmp);
+		}		tmp = FindInRect(m_vecRect[i]->GetX(), m_vecRect[i]->GetY() + 1);
+		if (nullptr != tmp && tmp != m_pStartRect)
+		{
+			tmp->SetParent(m_vecRect[i]);
+			m_vecRect[i]->SetNeighbor(tmp);
+		}		tmp = FindInRect(m_vecRect[i]->GetX() - 1, m_vecRect[i]->GetY() - 1);
+		if (nullptr != tmp && tmp != m_pStartRect)
+		{
+			tmp->SetParent(m_vecRect[i]);
+			m_vecRect[i]->SetNeighbor(tmp);
+		}		tmp = FindInRect(m_vecRect[i]->GetX() - 1, m_vecRect[i]->GetY() + 1);
+		if (nullptr != tmp && tmp != m_pStartRect)
+		{
+			tmp->SetParent(m_vecRect[i]);
+			m_vecRect[i]->SetNeighbor(tmp);
+		}		tmp = FindInRect(m_vecRect[i]->GetX() + 1, m_vecRect[i]->GetY() + 1);
+		if (nullptr != tmp && tmp != m_pStartRect)
+		{
+			tmp->SetParent(m_vecRect[i]);
+			m_vecRect[i]->SetNeighbor(tmp);
+		}		tmp = FindInRect(m_vecRect[i]->GetX() + 1, m_vecRect[i]->GetY() - 1);
+		if (nullptr != tmp && tmp != m_pStartRect)
+		{
+			tmp->SetParent(m_vecRect[i]);
+			m_vecRect[i]->SetNeighbor(tmp);
+		}
 	}
 	return 0;
 }
@@ -97,21 +132,20 @@ int CMap::FuncSetG(CRect* _pt)
 }
 
 
-CRect* CMap::DFS(CRect* _p)
+CRect* CMap::DFS(CRect* _p,int _index)
 {
-	if (nullptr == _p || _p->IsScaned())
+	// 탈출 조건식을 잘 못 두었다
+
+	if (_p->IsNeighLstEnd(_index))
 		return _p;
 	if (!_p->IsScaned())
 	{
-		FuncSetG(_p);
-		FuncSetH(_p);
+		printf("x : %d , y : %d 스캔중 \n", _p->GetX(), _p->GetY());
+		Sleep(300);
+		//FuncSetG(_p);
 	}
-	printf("x : %d , y : %d 스캔중 \n", _p->GetX(), _p->GetY());
-	Sleep(1000);
-	DFS(_p->GetRight());
-	DFS(_p->GetLeft());
-	DFS(_p->GetTop());
-	DFS(_p->GetBottom());
+	_p->TesetRender(GetDC(m_hWnd));
+	DFS(_p->GetNeighbor(_index + 1), _index + 1);
 }
 
 int CMap::Update()
@@ -119,7 +153,7 @@ int CMap::Update()
 	int x, y;
 	if (nullptr != m_pEndRect && nullptr != m_pStartRect)
 	{
-		DFS(m_pStartRect);
+		DFS(m_pStartRect->GetNeighbor(0), 0);
 	}
 	return 0;
 }
@@ -150,8 +184,9 @@ int CMap::Render(HDC _hdc)
 	return 0;
 }
 
-int CMap::Init(const int _row, const int _col, const int _rect_width, const int _rect_height)
+int CMap::Init(HWND _hwnd, const int _row, const int _col, const int _rect_width, const int _rect_height)
 {
+	m_hWnd = _hwnd;
 
 	int Pos_X = RECT_POS_X;
 	int Pos_Y = RECT_POS_Y;

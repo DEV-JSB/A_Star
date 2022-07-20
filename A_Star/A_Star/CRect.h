@@ -13,6 +13,10 @@ public:
 	bool			IsInRect(const TYPE _type,const int _x, const int _y);
 	int				SetTypeNormal() { m_eType = TYPE::TYPE_NORMAL; return 0; }
 	bool			FindPivotRect(const int _x, const int _y);
+	int				SetParent(CRect* _p);
+
+	// MustDeleteFunction
+	int				TesetRender(HDC _hdc);
 
 
 public:
@@ -20,26 +24,11 @@ public:
 	int SetF(const int _f) { m_iF = _f; return 0; }
 	int SetG(const int _g) { m_iG = _g; return 0; }
 	int SetH(const int _h) { m_iH = _h; return 0; }
-	int SetLeft(CRect* _p) { m_pLeft = _p; return 0; };
-	int SetRight(CRect* _p) { m_pRight = _p; return 0;	};
-	int SetTop(CRect* _p) { m_pTop= _p; return 0;	};
-	int SetBottom(CRect* _p) { m_pBottom= _p; return 0;	};
-	int SetLB(CRect* _p) { m_pLB = _p; return 0;	};
-	int SetLT(CRect* _p) { m_pLT = _p; return 0;	};
-	int SetRB(CRect* _p) { m_pRB = _p; return 0;	};
-	int SetRT(CRect* _p) { m_pRT = _p; return 0;	};
 	int SetScanState(const bool _b) { m_bVisited = _b; return 0; }
+	int SetNeighbor(CRect* _p) { m_vecNeighbor.push_back(_p); return 0; };
 
-	CRect* GetLeft() { return m_pLeft; };
-	CRect* GetRight() { return m_pRight; };
-	CRect* GetTop() { return m_pTop; };
-	CRect* GetBottom() { return m_pBottom; };
-	CRect* GetLB() { return m_pLB; };
-	CRect* GetLT() { return m_pLT; };
-	CRect* GetRB() { return m_pRB; };
-	CRect* GetRT() { return m_pRT; };
-
-
+	CRect* GetNeighbor(const int _index);
+	bool IsNeighLstEnd(const int _index);
 
 	bool IsScaned() { return m_bVisited; }
 	int GetX() { return m_iX; }
@@ -50,14 +39,7 @@ private:
 
 	CRect*	m_pParent;
 	
-	CRect* m_pLT;
-	CRect* m_pRT;
-	CRect* m_pLB;
-	CRect* m_pRB;
-	CRect* m_pLeft;
-	CRect* m_pRight;
-	CRect* m_pTop;
-	CRect* m_pBottom;
+	std::vector<CRect*> m_vecNeighbor;
 
 
 	bool	m_bVisited;

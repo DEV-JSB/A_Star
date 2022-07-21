@@ -5,8 +5,8 @@
 #define RECT_POS_X 50
 #define RECT_POS_Y 50
 
-#define WEIGHTING_NORMAL 5
-#define WEIGHTING_CORSS 7
+#define WEIGHTING_NORMAL 10
+#define WEIGHTING_CORSS 14
 
 #define UP -1
 #define DOWN 1
@@ -194,7 +194,7 @@ CRect* CMap::DFS(CRect* _owner, std::list<CRect*> _lst)
 	// 끝까지 탐색을 했다면 재귀호출을 한다
 	DFS(_owner, _owner->GetNeighbor());
 
-
+	return 0;
 }
 
 int CMap::Update()

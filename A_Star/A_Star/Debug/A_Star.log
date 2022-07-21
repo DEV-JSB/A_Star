@@ -1,7 +1,1 @@
-﻿  CMap.cpp
-C:\Users\Admin\Documents\GitHub\A_Star\A_Star\A_Star\CMap.cpp(19,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\Documents\GitHub\A_Star\A_Star\A_Star\CMap.cpp(28,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\Documents\GitHub\A_Star\A_Star\A_Star\CMap.cpp(64,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\Documents\GitHub\A_Star\A_Star\A_Star\CMap.cpp(152,16): warning C4244: 'argument': conversion from 'double' to 'const int', possible loss of data
-C:\Users\Admin\Documents\GitHub\A_Star\A_Star\A_Star\CMap.cpp(198): warning C4715: 'CMap::DFS': not all control paths return a value
-  A_Star.vcxproj -> C:\Users\Admin\Documents\GitHub\A_Star\A_Star\Debug\A_Star.exe
+﻿  A_Star.vcxproj -> C:\Users\Admin\Documents\GitHub\A_Star\A_Star\Debug\A_Star.exe

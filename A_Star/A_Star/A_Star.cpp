@@ -62,7 +62,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             DispatchMessage(&msg);
         }
     }
-
     return (int) msg.wParam;
 }
 
@@ -112,6 +111,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
    ghWnd = hWnd;
+   CMap::GetInstance()->Init(ghWnd, 20, 20);
+
    if (!hWnd)
    {
       return FALSE;
@@ -137,27 +138,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
-    case WM_TIMER:
-        switch (wParam)
-        {
-        case 0:
-            CMap::GetInstance()->Update();
-            InvalidateRect(hWnd, NULL, true);
-            break;
-        }
-        break;
+   
     case WM_GETMINMAXINFO:
         //윈도우 크기 고정
         ((MINMAXINFO*)lParam)->ptMaxTrackSize.x = 1080;
         ((MINMAXINFO*)lParam)->ptMaxTrackSize.y = 1080;
         ((MINMAXINFO*)lParam)->ptMinTrackSize.x = 1080;
         ((MINMAXINFO*)lParam)->ptMinTrackSize.y = 1100;
+        break;
     case WM_CREATE:
-    {
-        CMap::GetInstance()->Init(ghWnd,20, 20);
-        SetTimer(ghWnd, 0, 1000, NULL);
+        SetTimer(hWnd, 0, 1000, nullptr);
         InvalidateRect(hWnd, NULL, true);
-    }
+        break;
+    case WM_TIMER:
+        CMap::GetInstance()->Update();
+        InvalidateRect(hWnd, NULL, true);
+        break;
     case WM_LBUTTONDOWN:
         CMap::GetInstance()->SetStartRect(LOWORD(lParam), HIWORD(lParam));
         InvalidateRect(hWnd, NULL, true);
@@ -193,6 +189,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
     case WM_DESTROY:
+        KillTimer(hWnd, 0);
         PostQuitMessage(0);
         break;
     default:

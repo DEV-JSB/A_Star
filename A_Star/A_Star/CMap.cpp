@@ -68,69 +68,67 @@ int CMap::NodeConnect()
 		if (nullptr != tmp && tmp != m_pStartRect)
 		{
 			tmp->SetParent(m_vecRect[i]);
-			m_vecRect[i]->SetNeighbor(tmp);
+			m_vecLstRectNeigbor[i].push_back(tmp);
+		}
+		tmp = FindInRect(m_vecRect[i]->GetX() - 1, m_vecRect[i]->GetY() - 1);
+		if (nullptr != tmp && tmp != m_pStartRect)
+		{
+			tmp->SetParent(m_vecRect[i]);
+			m_vecLstRectNeigbor[i].push_back(tmp);
+		}
+		tmp = FindInRect(m_vecRect[i]->GetX(), m_vecRect[i]->GetY() - 1);
+		if (nullptr != tmp && tmp != m_pStartRect)
+		{
+			tmp->SetParent(m_vecRect[i]);
+			m_vecLstRectNeigbor[i].push_back(tmp);
+		}
+		tmp = FindInRect(m_vecRect[i]->GetX() + 1, m_vecRect[i]->GetY() - 1);
+		if (nullptr != tmp && tmp != m_pStartRect)
+		{
+			tmp->SetParent(m_vecRect[i]);
+			m_vecLstRectNeigbor[i].push_back(tmp);
 		}
 		tmp = FindInRect(m_vecRect[i]->GetX() + 1, m_vecRect[i]->GetY());
 		if (nullptr != tmp && tmp != m_pStartRect)
 		{
 			tmp->SetParent(m_vecRect[i]);
-			m_vecRect[i]->SetNeighbor(tmp);
-		}		
-		tmp = FindInRect(m_vecRect[i]->GetX(), m_vecRect[i]->GetY() - 1);
-		if (nullptr != tmp && tmp != m_pStartRect)
-		{
-			tmp->SetParent(m_vecRect[i]);
-			m_vecRect[i]->SetNeighbor(tmp);
-		}		
-		tmp = FindInRect(m_vecRect[i]->GetX(), m_vecRect[i]->GetY() + 1);
-		if (nullptr != tmp && tmp != m_pStartRect)
-		{
-			tmp->SetParent(m_vecRect[i]);
-			m_vecRect[i]->SetNeighbor(tmp);
-		}		
-		tmp = FindInRect(m_vecRect[i]->GetX() - 1, m_vecRect[i]->GetY() - 1);
-		if (nullptr != tmp && tmp != m_pStartRect)
-		{
-			tmp->SetParent(m_vecRect[i]);
-			m_vecRect[i]->SetNeighbor(tmp);
-		}		
-		tmp = FindInRect(m_vecRect[i]->GetX() - 1, m_vecRect[i]->GetY() + 1);
-		if (nullptr != tmp && tmp != m_pStartRect)
-		{
-			tmp->SetParent(m_vecRect[i]);
-			m_vecRect[i]->SetNeighbor(tmp);
-		}		
+			m_vecLstRectNeigbor[i].push_back(tmp);
+		}
 		tmp = FindInRect(m_vecRect[i]->GetX() + 1, m_vecRect[i]->GetY() + 1);
 		if (nullptr != tmp && tmp != m_pStartRect)
 		{
 			tmp->SetParent(m_vecRect[i]);
-			m_vecRect[i]->SetNeighbor(tmp);
-		}		
-		tmp = FindInRect(m_vecRect[i]->GetX() + 1, m_vecRect[i]->GetY() - 1);
+			m_vecLstRectNeigbor[i].push_back(tmp);
+		}
+		tmp = FindInRect(m_vecRect[i]->GetX(), m_vecRect[i]->GetY() + 1);
 		if (nullptr != tmp && tmp != m_pStartRect)
 		{
 			tmp->SetParent(m_vecRect[i]);
-			m_vecRect[i]->SetNeighbor(tmp);
+			m_vecLstRectNeigbor[i].push_back(tmp);
 		}
+		tmp = FindInRect(m_vecRect[i]->GetX() - 1, m_vecRect[i]->GetY() + 1);
+		if (nullptr != tmp && tmp != m_pStartRect)
+		{
+			tmp->SetParent(m_vecRect[i]);
+			m_vecLstRectNeigbor[i].push_back(tmp);
+		}
+	
+		
 	}
 	return 0;
 }
 
-int CMap::FuncSetH(CRect* _pt)
-{
-	if (nullptr == _pt)
-		return 0;
-	int Set = (abs(m_stEndPos.x - _pt->GetX()) * NORMAL) + (abs(m_stEndPos.y - _pt->GetY()) * NORMAL);
-	_pt->SetF(Set);
-	printf("%d , %d 좌표에 있는 Rect 는 H 값을 %d 로 조정했습니다 .\n", _pt->GetX(), _pt->GetY(), Set);
-	return 0;
-}
 
-int CMap::FuncSetG(CRect* _pt)
+
+int CMap::FuncSetValue(CRect* _owner,CRect* _pt)
 {
 	if (nullptr == _pt)
 		return 0;
-	int Set = (abs(m_stEndPos.x - _pt->GetX()) * NORMAL) + (abs(m_stEndPos.y - _pt->GetY()) * NORMAL);
+	// 나를 불렀던 아이를 기준으로의 가중치를 정해야 하니 우선 나를 부른 친구의 가중치 값을 가져온다.
+	int Set = _owner->GetG();
+	
+	if(_owner->GetX() )
+
 	_pt->SetG(Set);
 	printf("%d , %d 좌표에 있는 Rect 는 G 값을 %d 로 조정했습니다 .\n", _pt->GetX(), _pt->GetY(), Set);
 
@@ -138,32 +136,20 @@ int CMap::FuncSetG(CRect* _pt)
 }
 
 
-CRect* CMap::DFS(std::vector<CRect*> _lstRect)
+CRect* CMap::DFS(CRect* _owner,std::list<CRect*>& _lst)
 {
-	// DFS 내부에 FOR문을 도는 것 일까?
-	for (int i = 0; i < _lstRect.size(); ++i)
+	// 내 이웃 노드들을 탐색을 한다
+	for (auto iter = _lst.begin(); iter != _lst.end(); ++iter)
 	{
 		// 일단 찾았다!!
-		if (_lstRect[i] == m_pEndRect)
+		if ((*iter) == m_pEndRect)
 			return nullptr;
-		if (!_lstRect[i]->IsScaned())
-		{
-			printf("x : %d , y : %d 스캔중 \n", _lstRect[i]->GetX(), _lstRect[i]->GetY());
-			_lstRect[i]->SetScanState(true);
-			_lstRect[i]->TestRender(GetDC(m_hWnd));
-			Sleep(300);
-			//FuncSetG(_p);
-		}
-		DFS((_lstRect[0]->GetNeighborVector()));
-		DFS((_lstRect[1]->GetNeighborVector()));
-		DFS((_lstRect[2]->GetNeighborVector()));
-		DFS((_lstRect[3]->GetNeighborVector()));
-		DFS((_lstRect[4]->GetNeighborVector()));
-		DFS((_lstRect[5]->GetNeighborVector()));
-		DFS((_lstRect[6]->GetNeighborVector()));
-		DFS((_lstRect[7]->GetNeighborVector()));
-
+		(*iter)->TestRender(GetDC(m_hWnd));
+		Sleep(12);
+		FuncSetValue((*iter));
 	}
+
+
 }
 
 int CMap::Update()
@@ -171,7 +157,7 @@ int CMap::Update()
 	int x, y;
 	if (nullptr != m_pEndRect && nullptr != m_pStartRect)
 	{
-		DFS(m_pStartRect->GetNeighborVector());
+		DFS();
 	}
 	return 0;
 }
@@ -212,7 +198,8 @@ int CMap::Init(HWND _hwnd, const int _row, const int _col, const int _rect_width
 	{
 		for (int x = 0; x < _col; ++x)
 		{
-			m_vecRect.push_back(CRect::Create(x,y,Pos_X, Pos_Y, _rect_width, _rect_height));
+			m_vecLstRectNeigbor.push_back(std::list<CRect*>());
+			m_vecRect.push_back(CRect::Create(x, y, Pos_X, Pos_Y, _rect_width, _rect_height));
 			Pos_X += (_rect_width);
 		}
 		Pos_Y += (_rect_height);

@@ -1,1 +1,9 @@
-﻿  A_Star.vcxproj -> D:\UNITY\JK_MU\A_Star\A_Star\Debug\A_Star.exe
+﻿  CMap.cpp
+C:\Users\Admin\Documents\GitHub\A_Star\A_Star\A_Star\CMap.cpp(19,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\Documents\GitHub\A_Star\A_Star\A_Star\CMap.cpp(28,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\Documents\GitHub\A_Star\A_Star\A_Star\CMap.cpp(64,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\Documents\GitHub\A_Star\A_Star\A_Star\CMap.cpp(146,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\Documents\GitHub\A_Star\A_Star\A_Star\CMap.cpp(165,9): warning C4101: 'y': unreferenced local variable
+C:\Users\Admin\Documents\GitHub\A_Star\A_Star\A_Star\CMap.cpp(165,6): warning C4101: 'x': unreferenced local variable
+C:\Users\Admin\Documents\GitHub\A_Star\A_Star\A_Star\CMap.cpp(161): warning C4715: 'CMap::DFS': not all control paths return a value
+  A_Star.vcxproj -> C:\Users\Admin\Documents\GitHub\A_Star\A_Star\Debug\A_Star.exe

@@ -18,7 +18,7 @@ private:
 	int NodeConnect();
 	CRect* FindInRect(TYPE _type, const int _x, const int _y);
 	CRect* FindInRect(const int _x, const int _y);
-	CRect* DFS(std::vector<CRect*> _lstRect);
+	CRect* DFS(CRect* _owner, std::list<CRect*>& _lst);
 private:
 	CMap();
 	~CMap();
@@ -29,8 +29,7 @@ public:
 		return &map;
 	}
 public:
-	int FuncSetH(CRect* _pt);
-	int FuncSetG(CRect* _pt);
+	int FuncSetValue(CRect* _owner, CRect* _pt);
 	int SetEndRect(const int _x,const int _y);
 	int Update();
 	int SetStartRect(const int _x,const int _y);
@@ -46,5 +45,6 @@ private:
 	CRect* m_pEndRect;
 
 	std::vector<CRect*> m_vecRect;
+	std::vector<std::list<CRect*>> m_vecLstRectNeigbor;
 };
 

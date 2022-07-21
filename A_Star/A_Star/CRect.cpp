@@ -116,21 +116,3 @@ int CRect::TestRender(HDC _hdc)
 
 	return 0;
 }
-
-CRect* CRect::GetNeighbor(const int _index)
-{
-	if (m_vecNeighbor.size() <= _index)
-		return nullptr;
-	else
-		return m_vecNeighbor[_index];
-}
-
-bool CRect::IsNeighLstEnd(const int _index)
-{
-	if (m_vecNeighbor.size() == _index)
-		return true;
-	else
-		return false;
-}
-
-

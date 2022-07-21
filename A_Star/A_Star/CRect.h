@@ -17,30 +17,32 @@ public:
 
 	// MustDeleteFunction
 	int				TestRender(HDC _hdc);
-	std::vector<CRect*> GetNeighborVector() { return m_vecNeighbor; }
 
 public:
 
 	int SetF(const int _f) { m_iF = _f; return 0; }
 	int SetG(const int _g) { m_iG = _g; return 0; }
 	int SetH(const int _h) { m_iH = _h; return 0; }
-	int SetScanState(const bool _b) { m_bVisited = _b; return 0; }
-	int SetNeighbor(CRect* _p) { m_vecNeighbor.push_back(_p); return 0; };
 
-	CRect* GetNeighbor(const int _index);
-	bool IsNeighLstEnd(const int _index);
+	int SetScanState(const bool _b) { m_bVisited = _b; return 0; }
+
+	std::list<CRect*> GetNeighbor() { return m_lstNeigbor; }
 
 	bool IsScaned() { return m_bVisited; }
 	int GetX() { return m_iX; }
 	int GetY() { return m_iY; }
 
+	int GetG() { return m_iG; }
+	int GetH() { return m_iH; }
+	int GetF() { return m_iF; }
+
+
 private:
+	std::list<CRect*> m_lstNeigbor;
+
 	TYPE	m_eType;
 
 	CRect*	m_pParent;
-	
-	std::vector<CRect*> m_vecNeighbor;
-
 
 	bool	m_bVisited;
 
@@ -52,8 +54,6 @@ private:
 
 	int		m_iX;
 	int		m_iY;
-
-
 
 	int		m_iH;
 	int		m_iF;

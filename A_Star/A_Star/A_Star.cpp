@@ -146,6 +146,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         ((MINMAXINFO*)lParam)->ptMinTrackSize.x = 1080;
         ((MINMAXINFO*)lParam)->ptMinTrackSize.y = 1100;
         break;
+    case WM_MOUSEMOVE:
+        printf("X : %d , Y : %d\n", LOWORD(lParam), HIWORD(lParam));
+        break;
     case WM_CREATE:
         SetTimer(hWnd, 0, 1000, nullptr);
         InvalidateRect(hWnd, NULL, true);
@@ -157,6 +160,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_LBUTTONDOWN:
         CMap::GetInstance()->SetStartRect(LOWORD(lParam), HIWORD(lParam));
         InvalidateRect(hWnd, NULL, true);
+        break;
+    case WM_MOUSEWHEEL:
+        {
+            POINT pt;
+            GetCursorPos(&pt);
+            ScreenToClient(hWnd, &pt);
+            CMap::GetInstance()->SetWallRect(pt.x, pt.y);
+            InvalidateRect(hWnd, NULL, true);
+        }
         break;
     case WM_RBUTTONDOWN:
         CMap::GetInstance()->SetEndRect(LOWORD(lParam), HIWORD(lParam));

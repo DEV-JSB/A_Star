@@ -61,8 +61,15 @@ int CRect::Render(HDC _hdc)
 		SelectObject(_hdc, oldbrush);
 		DeleteObject(brush);
 		break;
+	case TYPE::TYPE_ROAD:
+		brush = CreateSolidBrush(RGB(255, 0, 255));
+		oldbrush = (HBRUSH)SelectObject(_hdc, brush);
+		Rectangle(_hdc, m_iPivot_x - m_iWidth * 0.5, m_iPivot_y - m_iHeight * 0.5, m_iPivot_x + m_iWidth * 0.5, m_iPivot_y + m_iHeight * 0.5);
+		SelectObject(_hdc, oldbrush);
+		DeleteObject(brush);
+		break;
 	case TYPE::TYPE_WALL:
-		brush = CreateSolidBrush(RGB(20, 20, 20));
+		brush = CreateSolidBrush(RGB(0, 0, 255));
 		oldbrush = (HBRUSH)SelectObject(_hdc, brush);
 		Rectangle(_hdc, m_iPivot_x - m_iWidth * 0.5, m_iPivot_y - m_iHeight * 0.5, m_iPivot_x + m_iWidth * 0.5, m_iPivot_y + m_iHeight * 0.5);
 		SelectObject(_hdc, oldbrush);
@@ -103,16 +110,16 @@ int CRect::SetParent(CRect* _p)
 }
 
 int CRect::TestRender(HDC _hdc)
-{
+{	
 	RECT rt{ m_iPivot_x - (int)(m_iWidth * 0.5) ,m_iPivot_y - (int)(m_iHeight * 0.5) ,m_iPivot_x + (int)(m_iWidth * 0.5) , m_iPivot_y + (int)(m_iHeight * 0.5) };
-	HBRUSH brush;
-	HBRUSH oldbrush;
-	char* buffer;
-	brush = CreateSolidBrush(RGB(0, 255, 0));
-	oldbrush = (HBRUSH)SelectObject(_hdc, brush);
-	Rectangle(_hdc, m_iPivot_x - m_iWidth * 0.5, m_iPivot_y - m_iHeight * 0.5, m_iPivot_x + m_iWidth * 0.5, m_iPivot_y + m_iHeight * 0.5);
-	SelectObject(_hdc, oldbrush);
-	DeleteObject(brush);
+
+	TCHAR str[256] = {};
+	wsprintf(str, TEXT("%d  %d"), m_iG, m_iH);
+	DrawText(_hdc, str, _tcslen(str), &rt, DT_CENTER | DT_WORDBREAK);
+	rt = { m_iPivot_x - (int)(m_iWidth * 0.5) ,m_iPivot_y - (int)(m_iHeight * 0.25) ,m_iPivot_x + (int)(m_iWidth * 0.5) , m_iPivot_y + (int)(m_iHeight * 0.5) };
+	wsprintf(str, TEXT("%d"), m_iF);
+	DrawText(_hdc, str, _tcslen(str), &rt, DT_CENTER | DT_WORDBREAK);
+
 
 	return 0;
 }

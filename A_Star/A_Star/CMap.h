@@ -15,12 +15,12 @@ class CMap
 {
 private:
 	int A_star();
-	int NodeConnect();
 	int DeleteNode(CRect* _p);
 	CRect* FindInRect(TYPE _type, const int _x, const int _y);
 	CRect* FindInRect(const int _x, const int _y);
-	CRect* DFS(CRect* _owner, std::list<CRect*> _lst);
+	bool DFS(CRect* _owner);
 	int FuncSetValue(CRect* _owner, CRect* _pt);
+	int DeleteNode(std::list<CRect*> _lst, CRect* _p);
 private:
 	CMap();
 	~CMap();
@@ -47,5 +47,8 @@ private:
 	CRect* m_pEndRect;
 
 	std::vector<CRect*> m_vecRect;
+
+	std::list<CRect*> m_lstOpenList;
+	std::list<CRect*> m_lstCloseList;
 };
 

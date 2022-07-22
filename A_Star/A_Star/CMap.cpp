@@ -59,65 +59,6 @@ int CMap::A_star()
 	return 0;
 }
 
-int CMap::NodeConnect()
-{
-	for (int i = 0; i < m_vecRect.size(); ++i)
-	{
-		CRect* tmp;
-		tmp = FindInRect(m_vecRect[i]->GetX() - 1, m_vecRect[i]->GetY());
-		if (nullptr != tmp && tmp != m_pStartRect)
-		{
-			tmp->SetParent(m_vecRect[i]);
-			m_vecRect[i]->PushNeigbor(tmp);
-		}
-		tmp = FindInRect(m_vecRect[i]->GetX() - 1, m_vecRect[i]->GetY() - 1);
-		if (nullptr != tmp && tmp != m_pStartRect)
-		{
-			tmp->SetParent(m_vecRect[i]);
-			m_vecRect[i]->PushNeigbor(tmp);
-		}
-		tmp = FindInRect(m_vecRect[i]->GetX(), m_vecRect[i]->GetY() - 1);
-		if (nullptr != tmp && tmp != m_pStartRect)
-		{
-			tmp->SetParent(m_vecRect[i]);
-			m_vecRect[i]->PushNeigbor(tmp);
-		}
-		tmp = FindInRect(m_vecRect[i]->GetX() + 1, m_vecRect[i]->GetY() - 1);
-		if (nullptr != tmp && tmp != m_pStartRect)
-		{
-			tmp->SetParent(m_vecRect[i]);
-			m_vecRect[i]->PushNeigbor(tmp);
-		}
-		tmp = FindInRect(m_vecRect[i]->GetX() + 1, m_vecRect[i]->GetY());
-		if (nullptr != tmp && tmp != m_pStartRect)
-		{
-			tmp->SetParent(m_vecRect[i]);
-			m_vecRect[i]->PushNeigbor(tmp);
-		}
-		tmp = FindInRect(m_vecRect[i]->GetX() + 1, m_vecRect[i]->GetY() + 1);
-		if (nullptr != tmp && tmp != m_pStartRect)
-		{
-			tmp->SetParent(m_vecRect[i]);
-			m_vecRect[i]->PushNeigbor(tmp);
-		}
-		tmp = FindInRect(m_vecRect[i]->GetX(), m_vecRect[i]->GetY() + 1);
-		if (nullptr != tmp && tmp != m_pStartRect)
-		{
-			tmp->SetParent(m_vecRect[i]);
-			m_vecRect[i]->PushNeigbor(tmp);
-		}
-		tmp = FindInRect(m_vecRect[i]->GetX() - 1, m_vecRect[i]->GetY() + 1);
-		if (nullptr != tmp && tmp != m_pStartRect)
-		{
-			tmp->SetParent(m_vecRect[i]);
-			m_vecRect[i]->PushNeigbor(tmp);
-		}
-
-
-	}
-	return 0;
-}
-
 int CMap::DeleteNode(CRect* _p)
 {
 	for (auto iter = m_vecRect.begin(); iter != m_vecRect.end(); ++iter)
@@ -155,55 +96,81 @@ int CMap::FuncSetValue(CRect* _owner, CRect* _pt)
 	return 0;
 }
 
-
-CRect* CMap::DFS(CRect* _owner, std::list<CRect*> _lst)
+int CMap::DeleteNode(std::list<CRect*> _lst, CRect* _p)
 {
-	// 내 이웃 노드들을 탐색하면서 Value 값들을 구해준다
 	for (auto iter = _lst.begin(); iter != _lst.end(); ++iter)
 	{
-		// 일단 찾았다!!
-		if ((*iter) == m_pEndRect)
-			return nullptr;
-		// 혹시 모르니 테스트로 렌더링을 진행한다
-		Sleep(20);
-		// Valu 값을 구하나 우선은 F값만 탐색을 한다.
-		// 지나간 노드는 세팅을 하지 마라
-		if (!(*iter)->IsVisited())
-			FuncSetValue(_owner, (*iter));
-		//(*iter)->TestRender(GetDC(m_hWnd));
-	}
-
-	// 탐색을 다 해줬다면 이제 F 값을 탐색해서 다음 탐색을 할 리스트들을 넘겨준다
-	// 우선은 임시로 10000의 값을 부여하고 최솟값을 찾아보자
-	int F_Value = 10000;
-	for (auto iter = _lst.begin(); iter != _lst.end(); ++iter)
-	{
-		if (!(*iter)->IsVisited())
+		if ((*iter) == _p)
 		{
-			if (F_Value > (*iter)->GetF())
-			{
-				F_Value = (*iter)->GetF();
-				_owner = (*iter);
-			}
+			_lst.erase(iter);
+			return 1;
 		}
 	}
-	// 얘가 최종적으로 로드이지 않은가 이게 왜 if 문 안에 있지??
-	_owner->SetTypeRoad();
-	_owner->Render(GetDC(m_hWnd));
+	return 0;
+}
+
+
+bool CMap::DFS(CRect* _owner)
+{
+	if (_owner == m_pEndRect)
+		return true;
+	// 탐색할 노드와 인접한 노드들을 오픈 리스트에 넣어준다.
+	CRect* tmp[8];
+	tmp[0] = FindInRect(_owner->GetX() + 1, _owner->GetY());
+	tmp[2] = FindInRect(_owner->GetX() - 1, _owner->GetY());
+	tmp[1] = FindInRect(_owner->GetX(), _owner->GetY() + 1);
+	tmp[3] = FindInRect(_owner->GetX(), _owner->GetY() - 1);
+	tmp[4] = FindInRect(_owner->GetX() + 1, _owner->GetY() + 1);
+	tmp[5] = FindInRect(_owner->GetX() + 1, _owner->GetY() - 1);
+	tmp[6] = FindInRect(_owner->GetX() - 1, _owner->GetY() + 1);
+	tmp[7] = FindInRect(_owner->GetX() - 1, _owner->GetY() - 1);
+
+	for (int i = 0; i < 8; ++i)
+	{
+		if (nullptr != tmp[i])
+		{
+			// 부모 노드를 설정을 해주고 오픈 리스트에 추가를 한다.
+			tmp[i]->SetParent(_owner);
+			m_lstOpenList.push_back(tmp[i]);
+		}
+	}
+	// 나를 이제 오픈리스트에서 삭제한다.
+	DeleteNode(m_lstOpenList, _owner);
+	// 닫힌 리스트에 나를 저장을 한다. ( 다시 볼 필요가 없다. )
+	m_lstCloseList.push_back(_owner);
+	
+
+	auto iter = m_lstOpenList.begin();
+	// 오픈 리스트들의 노드들을 순회한다
+	for (; iter != m_lstOpenList.end(); ++iter)
+	{
+		FuncSetValue(_owner, (*iter));
+		(*iter)->Render(GetDC(m_hWnd));
+	}
+	// 가장 작은 F 값을 찾는다
+	
+	iter = m_lstOpenList.begin();
+	int F_value = (*iter++)->GetF();
+	for (; iter != m_lstOpenList.end(); ++iter)
+	{
+		if (F_value > (*iter)->GetF())
+		{
+			F_value = (*iter)->GetF();
+			_owner = (*iter);
+		}
+	}
 
 	// 끝까지 탐색을 했다면 재귀호출을 한다
-	DFS(_owner, _owner->GetNeighbor());
-
-	return 0;
+	DFS(_owner);
 }
 
 int CMap::Update()
 {
 	if (nullptr != m_pEndRect && nullptr != m_pStartRect)
 	{
-		NodeConnect();
-		DFS(m_pStartRect, m_pStartRect->GetNeighbor());
-		return 0;
+		// 시작점을 열린 목록에 넣어준다
+		m_lstOpenList.push_back(m_pStartRect);
+		DFS(m_pStartRect);
 	}
 	return 0;
 }

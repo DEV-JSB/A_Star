@@ -28,8 +28,6 @@ public:
 
 	int SetScanState(const bool _b) { m_bVisited = _b; return 0; }
 
-	std::list<CRect*> GetNeighbor() { return m_lstNeigbor; }
-	int PushNeigbor(CRect* _p) { m_lstNeigbor.push_back(_p); return 0; }
 
 	bool IsVisited() { return m_bVisited; }
 	int GetX() { return m_iX; }
@@ -44,7 +42,6 @@ public:
 	int GetPivotY() { return m_iPivot_y; }
 
 private:
-	std::list<CRect*> m_lstNeigbor;
 
 	TYPE	m_eType;
 

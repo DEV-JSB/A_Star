@@ -20,7 +20,9 @@ private:
 	CRect* FindInRect(const int _x, const int _y);
 	bool DFS(CRect* _owner);
 	int FuncSetValue(CRect* _owner, CRect* _pt);
-	int DeleteNode(std::list<CRect*> _lst, CRect* _p);
+	int DeleteNode(std::list<CRect*>& _lst, CRect* _p);
+	bool IsInCloseList(CRect* _p);
+	bool IsInOpenList(CRect* _p);
 private:
 	CMap();
 	~CMap();

@@ -92,11 +92,13 @@ int CMap::FuncSetValue(CRect* _owner, CRect* _pt)
 	// H 값도 구해주자 동시에 F 값도 구해서 넣어주자
 	_pt->SetH(sqrt(pow(_pt->GetPivotX() - m_pEndRect->GetPivotX(), 2) + pow(_pt->GetPivotY() - m_pEndRect->GetPivotY(), 2)));
 
-	printf("%d , %d 에 위치한 도형에서의 목표점 까지 거리는 %d 입니다.\n", _pt->GetX(), _pt->GetY(), _pt->GetH());
+
 	return 0;
 }
 
-int CMap::DeleteNode(std::list<CRect*> _lst, CRect* _p)
+
+
+int CMap::DeleteNode(std::list<CRect*>& _lst, CRect* _p)
 {
 	for (auto iter = _lst.begin(); iter != _lst.end(); ++iter)
 	{
@@ -107,6 +109,24 @@ int CMap::DeleteNode(std::list<CRect*> _lst, CRect* _p)
 		}
 	}
 	return 0;
+}
+
+bool CMap::IsInCloseList(CRect* _p)
+{
+	auto iter = std::find(m_lstCloseList.begin(), m_lstCloseList.end(), _p);
+	if (iter == m_lstCloseList.end())
+		return false;
+	else
+		return true;
+}
+
+bool CMap::IsInOpenList(CRect* _p)
+{
+	auto iter = std::find(m_lstOpenList.begin(), m_lstOpenList.end(), _p);
+	if (iter == m_lstOpenList.end())
+		return false;
+	else
+		return true;
 }
 
 
@@ -125,31 +145,33 @@ bool CMap::DFS(CRect* _owner)
 	tmp[6] = FindInRect(_owner->GetX() - 1, _owner->GetY() + 1);
 	tmp[7] = FindInRect(_owner->GetX() - 1, _owner->GetY() - 1);
 
+	// 나를 이제 오픈리스트에서 삭제한다.
+	DeleteNode(m_lstOpenList, _owner);
+	// 닫힌 리스트에 나를 저장을 한다. ( 다시 볼 필요가 없다. )
+	m_lstCloseList.push_back(_owner);
 	for (int i = 0; i < 8; ++i)
 	{
-		if (nullptr != tmp[i])
+		// nullptr 그리고 만약 close 리스트에 있을때 추가하지 말아야한다.
+		// + 만약 open 리스트에 있지 않을때
+		if (nullptr != tmp[i] && !IsInCloseList(tmp[i])&& !IsInOpenList(tmp[i]))
 		{
 			// 부모 노드를 설정을 해주고 오픈 리스트에 추가를 한다.
 			tmp[i]->SetParent(_owner);
 			m_lstOpenList.push_back(tmp[i]);
 		}
 	}
-	// 나를 이제 오픈리스트에서 삭제한다.
-	DeleteNode(m_lstOpenList, _owner);
-	// 닫힌 리스트에 나를 저장을 한다. ( 다시 볼 필요가 없다. )
-	m_lstCloseList.push_back(_owner);
-	
 
 	auto iter = m_lstOpenList.begin();
 	// 오픈 리스트들의 노드들을 순회한다
 	for (; iter != m_lstOpenList.end(); ++iter)
 	{
 		FuncSetValue(_owner, (*iter));
-		(*iter)->Render(GetDC(m_hWnd));
+		(*iter)->Render(GetDC(m_hWnd), CreateSolidBrush(RGB(0, 255, 0)));
 	}
 	// 가장 작은 F 값을 찾는다
 	
 	iter = m_lstOpenList.begin();
+	_owner = (*iter);
 	int F_value = (*iter++)->GetF();
 	for (; iter != m_lstOpenList.end(); ++iter)
 	{
@@ -159,6 +181,7 @@ bool CMap::DFS(CRect* _owner)
 			_owner = (*iter);
 		}
 	}
+	_owner->Render(GetDC(m_hWnd), CreateSolidBrush(RGB(0, 100, 0)));
 
 	// 끝까지 탐색을 했다면 재귀호출을 한다
 	DFS(_owner);
@@ -169,7 +192,6 @@ int CMap::Update()
 	if (nullptr != m_pEndRect && nullptr != m_pStartRect)
 	{
 		// 시작점을 열린 목록에 넣어준다
-		m_lstOpenList.push_back(m_pStartRect);
 		DFS(m_pStartRect);
 	}
 	return 0;
@@ -199,11 +221,11 @@ int CMap::SetStartRect(const int _x, const int _y)
 int CMap::Render(HDC _hdc)
 {
 	for (std::vector<CRect*>::iterator iter = m_vecRect.begin(); iter != m_vecRect.end(); ++iter)
-		(*iter)->Render(_hdc);
+		(*iter)->Render(_hdc,nullptr);
 	if (nullptr != m_pStartRect)
-		m_pStartRect->Render(_hdc);
+		m_pStartRect->Render(_hdc, CreateSolidBrush(RGB(255,0,0)));
 	if (nullptr != m_pEndRect)
-		m_pEndRect->Render(_hdc);
+		m_pEndRect->Render(_hdc, CreateSolidBrush(RGB(0, 0, 255)));
 	return 0;
 }
 

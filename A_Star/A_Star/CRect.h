@@ -11,7 +11,7 @@ private:
 
 public:
 	static CRect*	Create(const int _coordi_x, const int _coordi_y, const int _x, const int _y, const int _width, const int _height);
-	int				Render(HDC _hdc);
+	int				Render(HDC _hdc, HBRUSH _brush);
 	bool			IsInRect(const TYPE _type,const int _x, const int _y);
 	int				SetTypeNormal() { m_eType = TYPE::TYPE_NORMAL; return 0; }
 	int				SetTypeRoad() { m_bVisited = true; m_eType = TYPE::TYPE_ROAD; return 0; }
